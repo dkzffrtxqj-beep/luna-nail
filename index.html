@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Luna 美甲｜價格計算</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial;
+    background: #f4efe9;
+    margin: 0;
+    padding: 20px;
+    color: #4a4a4a;
+  }
+  h1 {
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  }
+  .option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+  }
+  button {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    background: #e6ddf5;
+    font-size: 16px;
+  }
+  button.active {
+    background: #b9a7e3;
+    color: #fff;
+  }
+  input {
+    width: 80px;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    text-align: right;
+  }
+  .total {
+    font-size: 28px;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  .note {
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🌙 Luna 美甲 價格計算</h1>
+
+<div class="card">
+  <h3>基礎款式</h3>
+  <div class="option"><button onclick="selectBase(600, this)">單色 $600</button></div>
+  <div class="option"><button onclick="selectBase(700, this)">貓眼 $700</button></div>
+  <div class="option"><button onclick="selectBase(900, this)">法式 $900</button></div>
+  <div class="option"><button onclick="selectBase(900, this)">鏡面 $900</button></div>
+  <div class="option"><button onclick="selectBase(1000, this)">漸層 $1000</button></div>
+  <div class="option">
+    <button onclick="selectBase(900, this)">帶圖 $900 起</button>
+    <input type="number" placeholder="+設計" oninput="designExtra=this.value;calc()" />
+  </div>
+</div>
+
+<div class="card">
+  <h3>加購</h3>
+  <div class="option">
+    延甲（$80/隻）
+    <input type="number" min="0" max="10" value="0" oninput="extension=this.value;calc()" />
+  </div>
+  <div class="option">
+    卸甲 $200
+    <input type="checkbox" onchange="removeNail=this.checked;calc()" />
+  </div>
+  <div class="option">
+    純卸甲 $300
+    <input type="checkbox" onchange="pureRemove=this.checked;calc()" />
+  </div>
+</div>
+
+<div class="card">
+  <h3>會員</h3>
+  <div class="option">
+    會員 9 折
+    <input type="checkbox" onchange="member=this.checked;calc()" />
+  </div>
+</div>
+
+<div class="card">
+  <div class="total">總金額：$<span id="total">0</span></div>
+  <div class="note">＊設計依複雜度調整，皆於施作前說明 🌙</div>
+</div>
+
+<script>
+let base = 0;
+let designExtra = 0;
+let extension = 0;
+let removeNail = false;
+let pureRemove = false;
+let member = false;
+
+function selectBase(price, btn) {
+  base = price;
+  document.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  calc();
+}
+
+function calc() {
+  let total = base;
+  total += Number(designExtra || 0);
+  total += extension * 80;
+  if (removeNail) total += 200;
+  if (pureRemove) total += 300;
+  if (member) total = Math.round(total * 0.9);
+  document.getElementById("total").innerText = total;
+}
+</script>
+
+</body>
+</html>
